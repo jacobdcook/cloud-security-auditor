@@ -20,6 +20,9 @@ config.json
 LAB_EXECUTION_GUIDE.md
 SCREENSHOT_GUIDE.md
 
+# API Keys Reference (Local reference only, contains sensitive data)
+API_KEYS_REFERENCE.md
+
 # Reports
 reports/
 *.pdf
