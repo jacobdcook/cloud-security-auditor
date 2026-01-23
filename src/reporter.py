@@ -82,23 +82,50 @@ def generate_report(results):
         pdf.set_font("Arial", "B", 9 if is_first_page else 10)
         pdf.cell(0, 5, txt="AI Remediation:", ln=True)
         pdf.set_font("Courier", size=7 if is_first_page else 8)
+        # Use proper width (190mm for A4 with margins)
+        code_width = 190
+        line_height = 3 if is_first_page else 4
+        
         # Split long code blocks into smaller chunks for better formatting
         for line in fix_clean.split('\n'):
-            if len(line) > 80:
-                # Break long lines
+            # Skip empty lines
+            if not line.strip():
+                pdf.ln(2)
+                continue
+            
+            # Clean the line (remove any problematic characters)
+            line = line.replace('\r', '').strip()
+            if not line:
+                continue
+            
+            # Break very long lines (more than 100 chars)
+            if len(line) > 100:
+                # Break at spaces or special characters
                 words = line.split(' ')
                 current_line = ""
                 for word in words:
-                    if len(current_line + word) < 80:
+                    if len(current_line + word) < 100:
                         current_line += word + " "
                     else:
-                        if current_line:
-                            pdf.multi_cell(0, 3 if is_first_page else 4, txt=current_line.strip())
+                        if current_line.strip():
+                            try:
+                                pdf.multi_cell(code_width, line_height, txt=current_line.strip())
+                            except:
+                                # If still fails, truncate further
+                                pdf.multi_cell(code_width, line_height, txt=current_line.strip()[:90])
                         current_line = word + " "
-                if current_line:
-                    pdf.multi_cell(0, 3 if is_first_page else 4, txt=current_line.strip())
+                if current_line.strip():
+                    try:
+                        pdf.multi_cell(code_width, line_height, txt=current_line.strip())
+                    except:
+                        pdf.multi_cell(code_width, line_height, txt=current_line.strip()[:90])
             else:
-                pdf.multi_cell(0, 3 if is_first_page else 4, txt=line)
+                # Regular line - truncate if too long
+                try:
+                    pdf.multi_cell(code_width, line_height, txt=line)
+                except:
+                    # Fallback: truncate to 90 chars
+                    pdf.multi_cell(code_width, line_height, txt=line[:90])
         pdf.ln(1 if is_first_page else 2)
 
     pdf.output(pdf_path)
