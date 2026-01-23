@@ -17,9 +17,17 @@ def get_remediation(finding):
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.1-70b-versatile",
+            model="llama-3.3-70b-versatile",
             messages=[{"role": "user", "content": prompt}]
         )
         return response.choices[0].message.content
     except Exception as e:
-        return f"Error generating remediation: {e}"
+        # Try fallback model if primary fails
+        try:
+            response = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return response.choices[0].message.content
+        except Exception as e2:
+            return f"Error generating remediation: {e2}"

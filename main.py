@@ -29,10 +29,28 @@ def main():
     # 3. AI Remediation
     print("\n🤖 Generating AI Remediation suggestions...")
     all_findings = static_results + dynamic_results
-    remediations = []
-    for finding in all_findings:
-        fix = get_remediation(finding)
-        remediations.append({"finding": finding, "fix": fix})
+    
+    if not all_findings:
+        print("No findings to remediate.")
+        remediations = []
+    else:
+        print(f"Found {len(all_findings)} security issues. Generating fixes...\n")
+        remediations = []
+        for i, finding in enumerate(all_findings, 1):
+            # Extract issue name for display
+            issue_name = finding.get("check_name", "Security Issue")
+            if isinstance(finding, dict):
+                issue_name = finding.get("check_name", finding.get("issue", "Security Issue"))
+            
+            print(f"[{i}/{len(all_findings)}] Issue: {issue_name}")
+            print(f"   Resource: {finding.get('resource', 'N/A')}")
+            fix = get_remediation(finding)
+            remediations.append({"finding": finding, "fix": fix})
+            
+            # Print the remediation
+            print(f"   AI Remediation:")
+            print(f"   {fix}")
+            print()  # Blank line between findings
 
     # 4. Reporting
     print("\n📊 Generating Security Report...")
