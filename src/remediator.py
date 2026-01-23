@@ -1,15 +1,15 @@
 import os
-from openai import OpenAI
+from groq import Groq
 
 def get_remediation(finding):
     """
-    Uses AI to generate remediation code for a security finding.
+    Uses AI (Groq) to generate remediation code for a security finding.
     """
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
         return "AI Remediation skipped: No API key provided."
 
-    client = OpenAI(api_key=api_key)
+    client = Groq(api_key=api_key)
     
     # Constructing a prompt based on the finding type
     issue_description = str(finding)
@@ -17,7 +17,7 @@ def get_remediation(finding):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="llama-3.1-70b-versatile",
             messages=[{"role": "user", "content": prompt}]
         )
         return response.choices[0].message.content

@@ -5,7 +5,6 @@ azure-mgmt-network
 azure-mgmt-compute
 azure-identity
 pydantic
-openai
-anthropic
+groq
 python-dotenv
 fpdf2

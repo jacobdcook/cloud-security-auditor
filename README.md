@@ -6,7 +6,7 @@ This project is an automated security auditing tool designed to identify misconf
 ## Key Objectives
 - **Static Analysis**: Automated scanning of `.tf` files using `Checkov`.
 - **Dynamic Auditing**: Real-time querying of Azure resources (Storage, Network, Compute) for security gaps.
-- **AI Remediation**: Automatic generation of "Fix" code using AI models (OpenAI/Anthropic).
+- **AI Remediation**: Automatic generation of "Fix" code using AI models (Groq - Free API).
 - **Consolidated Reporting**: Unified security posture reports in JSON and PDF formats.
 
 ## Technical Architecture
@@ -14,7 +14,7 @@ This project is an automated security auditing tool designed to identify misconf
 - **Infrastructure**: Terraform (HCL)
 - **Cloud Provider**: Microsoft Azure
 - **Security Tools**: Checkov
-- **AI Integration**: OpenAI/Anthropic APIs
+- **AI Integration**: Groq API (Free)
 - **Reporting**: Pydantic, FPDF2
 
 ## Lab Execution & Evidence
