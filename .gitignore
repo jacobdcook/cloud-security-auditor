@@ -16,6 +16,10 @@ env/
 personal_plan.json
 config.json
 
+# AI-Generated Lab Guides (Local reference only, not for GitHub)
+LAB_EXECUTION_GUIDE.md
+SCREENSHOT_GUIDE.md
+
 # Reports
 reports/
 *.pdf
