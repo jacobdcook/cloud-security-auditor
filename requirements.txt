@@ -1,0 +1,11 @@
+checkov
+azure-mgmt-resource
+azure-mgmt-storage
+azure-mgmt-network
+azure-mgmt-compute
+azure-identity
+pydantic
+openai
+anthropic
+python-dotenv
+fpdf2

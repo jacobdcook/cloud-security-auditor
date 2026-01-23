@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# Infrastructure
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Local AI/Personal Files (Per Preferences)
+personal_plan.json
+config.json
+
+# Reports
+reports/
+*.pdf
+*.json
+
+# OS
+.DS_Store
