@@ -51,10 +51,12 @@ Generation of a comprehensive security report summarizing all findings and recom
 
 ## How to Use
 1. **Clone the repo**: `git clone https://github.com/jacobdcook/cloud-security-auditor`
-2. **Install dependencies**: `pip install -r requirements.txt`
-3. **Configure Azure CLI**: `az login`
-4. **Set Environment Variables**: Create a `.env` file with your AI API keys.
-5. **Run the Auditor**: `python main.py`
+2. **Create virtual environment**: `python3 -m venv venv`
+3. **Activate virtual environment**: `source venv/bin/activate` (you'll see `(venv)` in your prompt)
+4. **Install dependencies**: `pip install -r requirements.txt`
+5. **Configure Azure CLI**: `az login`
+6. **Set Environment Variables**: Create a `.env` file with your AI API keys and Azure subscription ID.
+7. **Run the Auditor**: `python main.py` (or `python main.py --azure` for live Azure scanning)
 
 ## Learning Outcomes
 - Advanced understanding of **DevSecOps** and automated compliance.
