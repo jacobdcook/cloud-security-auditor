@@ -56,6 +56,31 @@ def main():
     print("\n📊 Generating Security Report...")
     generate_report(remediations)
 
+    # 5. Security Posture Summary
+    print("\n🛡️  Security Posture Summary:")
+    print("----------------------------")
+    
+    severity_counts = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0, "UNKNOWN": 0}
+    for entry in remediations:
+        finding = entry["finding"]
+        severity = str(finding.get("severity", "MEDIUM")).upper()
+        if severity in severity_counts:
+            severity_counts[severity] += 1
+        else:
+            severity_counts["UNKNOWN"] += 1
+            
+    print(f"🔴 Critical: {severity_counts['CRITICAL']}")
+    print(f"🟠 High:     {severity_counts['HIGH']}")
+    print(f"🟡 Medium:   {severity_counts['MEDIUM']}")
+    print(f"🔵 Low:      {severity_counts['LOW']}")
+    
+    total = len(remediations)
+    if total > 0:
+        print(f"\nTotal findings: {total}")
+        print("Recommendation: Address Critical and High issues immediately.")
+    else:
+        print("\n✅ No security issues found. Great job!")
+
     print("\n✅ Audit complete! Check the reports directory.")
 
 if __name__ == "__main__":
