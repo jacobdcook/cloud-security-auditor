@@ -54,21 +54,34 @@ def generate_report(results):
                 lines = lines[:-1]
             fix_clean = '\n'.join(lines)
         
-        # Add page break if needed (every 3 findings or if content is getting long)
-        if i > 1 and i % 3 == 1:
+        # For first 3 findings on page 1: limit code to 12 lines max to ensure they all fit
+        is_first_page = i <= 3
+        if is_first_page:
+            fix_lines = fix_clean.split('\n')
+            if len(fix_lines) > 12:
+                fix_clean = '\n'.join(fix_lines[:12]) + '\n... (truncated for display)'
+        
+        # Add page break AFTER first 3 findings (so findings 1-3 are on page 1)
+        if i == 4:
             pdf.add_page()
             pdf.set_font("Arial", "B", 16)
             pdf.cell(200, 10, txt="Cloud Security Audit Report (continued)", ln=True, align='C')
         
-        pdf.ln(8)
-        pdf.set_font("Arial", "B", 12)
-        pdf.cell(0, 8, txt=f"Finding #{i}: {issue_name}", ln=True)
-        pdf.set_font("Arial", size=10)
-        pdf.multi_cell(0, 6, txt=f"Resource: {resource}\nType: {resource_type}\nSeverity: {severity}")
-        pdf.ln(3)
-        pdf.set_font("Arial", "B", 10)
-        pdf.cell(0, 6, txt="AI Remediation:", ln=True)
-        pdf.set_font("Courier", size=8)
+        # Optimize spacing for first page
+        if is_first_page:
+            pdf.ln(5)  # Less spacing on first page
+            pdf.set_font("Arial", "B", 11)  # Slightly smaller font
+        else:
+            pdf.ln(8)
+            pdf.set_font("Arial", "B", 12)
+        
+        pdf.cell(0, 6, txt=f"Finding #{i}: {issue_name}", ln=True)
+        pdf.set_font("Arial", size=9 if is_first_page else 10)
+        pdf.multi_cell(0, 5, txt=f"Resource: {resource}\nType: {resource_type}\nSeverity: {severity}")
+        pdf.ln(2)
+        pdf.set_font("Arial", "B", 9 if is_first_page else 10)
+        pdf.cell(0, 5, txt="AI Remediation:", ln=True)
+        pdf.set_font("Courier", size=7 if is_first_page else 8)
         # Split long code blocks into smaller chunks for better formatting
         for line in fix_clean.split('\n'):
             if len(line) > 80:
@@ -80,13 +93,13 @@ def generate_report(results):
                         current_line += word + " "
                     else:
                         if current_line:
-                            pdf.multi_cell(0, 4, txt=current_line.strip())
+                            pdf.multi_cell(0, 3 if is_first_page else 4, txt=current_line.strip())
                         current_line = word + " "
                 if current_line:
-                    pdf.multi_cell(0, 4, txt=current_line.strip())
+                    pdf.multi_cell(0, 3 if is_first_page else 4, txt=current_line.strip())
             else:
-                pdf.multi_cell(0, 4, txt=line)
-        pdf.ln(2)
+                pdf.multi_cell(0, 3 if is_first_page else 4, txt=line)
+        pdf.ln(1 if is_first_page else 2)
 
     pdf.output(pdf_path)
     print(f"PDF report generated: {pdf_path}")
