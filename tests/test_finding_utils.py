@@ -1,5 +1,3 @@
-import pytest
-
 from src.finding_utils import (
     count_remediation_severities,
     extract_failed_checks,
