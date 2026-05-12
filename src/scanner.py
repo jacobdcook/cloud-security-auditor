@@ -1,6 +1,9 @@
 import subprocess
 import json
 
+from src.finding_utils import extract_failed_checks
+
+
 def scan_terraform(path):
     """
     Runs Checkov on the specified path and returns findings.
@@ -15,14 +18,7 @@ def scan_terraform(path):
         )
         if result.stdout:
             data = json.loads(result.stdout)
-            # Simplified findings extraction
-            findings = []
-            if isinstance(data, list):
-                for report in data:
-                    findings.extend(report.get("results", {}).get("failed_checks", []))
-            else:
-                findings = data.get("results", {}).get("failed_checks", [])
-            return findings
+            return extract_failed_checks(data)
     except Exception as e:
         print(f"Error running Checkov: {e}")
         return []

@@ -5,6 +5,7 @@ from src.scanner import scan_terraform
 from src.auditor import audit_azure
 from src.remediator import get_remediation
 from src.reporter import generate_report
+from src.finding_utils import count_remediation_severities
 
 load_dotenv()
 
@@ -60,15 +61,8 @@ def main():
     print("\n🛡️  Security Posture Summary:")
     print("----------------------------")
     
-    severity_counts = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0, "UNKNOWN": 0}
-    for entry in remediations:
-        finding = entry["finding"]
-        severity = str(finding.get("severity", "MEDIUM")).upper()
-        if severity in severity_counts:
-            severity_counts[severity] += 1
-        else:
-            severity_counts["UNKNOWN"] += 1
-            
+    severity_counts = count_remediation_severities(remediations)
+
     print(f"🔴 Critical: {severity_counts['CRITICAL']}")
     print(f"🟠 High:     {severity_counts['HIGH']}")
     print(f"🟡 Medium:   {severity_counts['MEDIUM']}")

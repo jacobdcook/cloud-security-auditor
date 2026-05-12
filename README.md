@@ -57,6 +57,7 @@ Generation of a comprehensive security report summarizing all findings and recom
 5. **Configure Azure CLI**: `az login`
 6. **Set Environment Variables**: Create a `.env` file with your AI API keys and Azure subscription ID.
 7. **Run the Auditor**: `python main.py` (or `python main.py --azure` for live Azure scanning)
+8. **Run tests**: `pytest` (from repo root with venv activated)
 
 ## Learning Outcomes
 - Advanced understanding of **DevSecOps** and automated compliance.

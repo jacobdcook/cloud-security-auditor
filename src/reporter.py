@@ -1,7 +1,10 @@
 import json
 import os
+
 from fpdf import FPDF
 import datetime
+
+from src.finding_utils import strip_code_fence
 
 def generate_report(results):
     """
@@ -42,17 +45,7 @@ def generate_report(results):
         severity = finding.get('severity', 'Medium')  # Default to Medium if not specified
         
         # Clean up the fix code (remove markdown code blocks)
-        fix_clean = fix
-        if fix_clean.startswith('```'):
-            # Remove markdown code block markers
-            lines = fix_clean.split('\n')
-            # Remove first line (```hcl or ```terraform)
-            if lines[0].startswith('```'):
-                lines = lines[1:]
-            # Remove last line if it's just ```
-            if lines and lines[-1].strip() == '```':
-                lines = lines[:-1]
-            fix_clean = '\n'.join(lines)
+        fix_clean = strip_code_fence(fix)
         
         # For first 3 findings on page 1: limit code to 12 lines max to ensure they all fit
         is_first_page = i <= 3
